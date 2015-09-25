@@ -5,7 +5,6 @@ library(drsmooth)
 
 # test scripts do not seem to recognize loaded libraries:
 library(car)
-library(clinfun)
 library(multcomp)
 library(pgirmess)
 library(DTK)

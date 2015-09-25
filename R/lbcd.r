@@ -8,6 +8,8 @@
 #' The user may provide a limit below which the linearity of the dose-response relationship
 #' is tested.  A significant result indicates that the slope is non-zero below 
 #' the user-specified cutoff dose.
+#' 
+#' The nlaad, nlbcd, and lbcd functions are currently only intended for use on continuous outcome data.
 #' @param dosecolumn   Name of dose column in input dataframe.
 #' @param targetcolumn   Name of response column in input dataframe.
 #' @param cutoffdose   Cut-off dose (numeric).
@@ -32,7 +34,7 @@ lbcd <- function (dosecolumn = "", targetcolumn = "", cutoffdose=0, data=NA) {
     Dose_below_cutoff <- subset(data,data[,dosecolumn] < cutoffdose)
     targetvariablebcsubset <- Dose_below_cutoff[,targetcolumn]
     
-    linearmodelbcsubset <- lm(targetvariablebcsubset~Dose_below_cutoff[,dosecolumn], data=Dose_below_cutoff)
+    linearmodelbcsubset <- stats::lm(targetvariablebcsubset~Dose_below_cutoff[,dosecolumn], data=Dose_below_cutoff)
 
     summary(linearmodelbcsubset)
 }

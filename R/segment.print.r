@@ -2,7 +2,6 @@
 #' @title Print Segmented Statistics
 #' @param mod  Segmented model object
 #' @keywords internal
-#' @export
 
 segment.print <- function(mod) {
 

@@ -12,7 +12,7 @@
 #' (monotone trend) tests are available.  All tests are executed unless a smaller set is specified using
 #' the 'tests' parameter.
 #'     
-#'     Outlier test.  Calls outlierTest -- there is at least one Bonferroni-adjusted outlier
+#'     Outlier test.  Calls car::outlierTest -- there is at least one Bonferroni-adjusted outlier
 #'                    if the p value is less than the targeted alpha level.
 #'
 #'     Bartletts.     Variances are non-homogeneous if the p value is less than the targeted alpha level. 
@@ -29,6 +29,9 @@
 #'     Jonckheere.    There is evidence of a monotonic trend if the p-value is lower than
 #'                    the targeted alpha.
 #'
+#' All columns other than the one identified as the dosecolumn are subjected to these tests;
+#' therefore the input data frame should only contain the dosecolumn and response column(s).
+#' This function is currently only intended for use on continuous outcome data.
 #' @param dosecolumn  Name of column containing dose in input data frame, e.g. "dose"
 #' @param tests  List of tests to run.  May specify a subset by omitting any of the
 #' default tests = c("outlier", "bartlett", "shapiro", "chisquare", "jonckheere").
@@ -47,23 +50,30 @@
 #' prelimstats("dose", tests=c("bartlett", "shapiro"), data=DRdata) 
 #' @export
 
-prelimstats <- function (dosecolumn="", tests=c("outlier", "bartlett", "shapiro", "chisquare", "jonckheere"), data=NA) {
+prelimstats <- function (dosecolumn="", 
+                         tests=c("outlier", 
+                                 "bartlett",
+                                 "shapiro",
+                                 "chisquare",
+                                 "jonckheere"), 
+                         data=NA) {
 
-	validate.prelimstats(data)
+	# validate.prelimstats(data)
 
 	# Create factor variable for modeling.
-	x <- dosefactor(dosecolumn, data)
+  f <- get("dosefactor", envir = environment(drsmooth))
+	x <- f(dosecolumn, data)
 
 	# Perform tests.
 	prelim_stats <- matrix(nrow=((ncol(x))*length(tests)), ncol=2)
 	for (i in 1:length(tests)) {
-		test_name <- tests[i]
-		f <- match.fun(test_name)
+		f <- get(tests[i], envir = environment(drsmooth))
 		output_matrix <- f(x)
 		start_row <- (i-1)*(ncol(x))+1
 		for (j in 1:nrow(output_matrix)) {
 			prelim_stats[start_row+j-1,] <- output_matrix[j,]
 		}
 	}
-	drsmooth.print(prelim_stats)
+	p <- get("drsmooth.print", envir = environment(drsmooth))
+	p(prelim_stats)
 }

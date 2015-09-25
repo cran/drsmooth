@@ -7,11 +7,10 @@
 #' @param targetcolumn   Name of response column.
 #' @param data   Input dataframe.
 #' @keywords internal
-#' @export
 
 segment.plot <- function (mod=NA, dosecolumn="", targetcolumn="", data=NA) {
 
-    plot(data[,dosecolumn], data[,targetcolumn], type="p", xlab = dosecolumn, ylab = targetcolumn, pch=19)
-    plot.segmented(mod, add=TRUE)
+    graphics::plot(data[,dosecolumn], data[,targetcolumn], type="p", xlab = dosecolumn, ylab = targetcolumn, pch=19)
+    segmented::plot.segmented(mod, add=TRUE)
 
 }

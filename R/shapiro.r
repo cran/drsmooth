@@ -2,7 +2,6 @@
 #' @title Shapiro
 #' @param x  input data frame
 #' @keywords internal
-#' @export
 
 ## Hardcoding for column order should be removed from these.
 
@@ -15,9 +14,9 @@ shapiro <- function(x)
 	iterations <- ncol(x)-2
 	for (i in 1:iterations)
 	{
-	lm <- lm(x[,i+2] ~ x[,2], data=x)
+	lm <- stats::lm(x[,i+2] ~ x[,2], data=x)
  	outputmatrix[i+1,1] <- colnames(x[i+2])
- 	outputmatrix[i+1,2] <- shapiro_p <- shapiro.test(lm$residuals)$p.value
+ 	outputmatrix[i+1,2] <- shapiro_p <- stats::shapiro.test(lm$residuals)$p.value
 	}
 	return(outputmatrix)
 }

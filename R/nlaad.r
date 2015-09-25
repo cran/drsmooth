@@ -9,6 +9,8 @@
 #' The non-linear spline model (output "Model 2") is compared to the linear model (output "Model 1") 
 #' using an anova F-test.  If the spline model fits the data signficantly better,
 #' the F will be large and the associated p value will be significant.
+#' 
+#' The nlaad, nlbcd, and lbcd functions are currently only intended for use on continuous outcome data.
 #' @param dosecolumn   Name of dose column in dataframe.
 #' @param targetcolumn   Name of response column in dataframe.
 #' @param data   Input dataframe.
@@ -26,14 +28,14 @@
 
 nlaad <- function (dosecolumn="", targetcolumn="", data=NA) {
     
-    splinemodel <- gam(data[,targetcolumn]~s(data[,dosecolumn], k=4), data=data)
-    linearmodel <- lm(data[,targetcolumn]~data[,dosecolumn], data=data)
+    splinemodel <- mgcv::gam(data[,targetcolumn]~s(data[,dosecolumn], k=4), data=data)
+    linearmodel <- stats::lm(data[,targetcolumn]~data[,dosecolumn], data=data)
     
     spline_rsq <- summary(splinemodel)$r.sq
     linear_rsq <- summary(linearmodel)$r.sq
     
     if ((spline_rsq - linear_rsq) > (.01*linear_rsq))
-        anova(linearmodel,splinemodel,test="F")
+        stats::anova(linearmodel,splinemodel,test="F")
     else
         return("The linear and non-linear models are not substantially different.")
 }

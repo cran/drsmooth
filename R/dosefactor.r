@@ -4,7 +4,6 @@
 #' @param dosecolumn   Name of dose column in dataframe.
 #' @param data   Input dataframe.
 #' @keywords internal
-#' @export
 
 dosefactor <- function (dosecolumn = "", data = NA) {
 

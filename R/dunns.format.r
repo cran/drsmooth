@@ -3,7 +3,6 @@
 #' @param model  Dunn's test model object
 #' @param test   Name of the test executed
 #' @keywords internal
-#' @export
 
 dunns.format <- function (model, test) {
 

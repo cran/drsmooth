@@ -4,7 +4,6 @@
 #' @param test   Name of the test to be formatted
 #' @param levels   Dose factor levels defining rows in formatted output
 #' @keywords internal
-#' @export
 
 dunnetts.format <- function (summary, test, levels) {
 

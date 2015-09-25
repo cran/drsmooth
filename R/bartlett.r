@@ -2,7 +2,6 @@
 #' @title Bartlett's
 #' @param x  input data frame
 #' @keywords internal
-#' @export
 
 ## Hardcoding for column order should be removed from these.
 
@@ -17,7 +16,7 @@ bartlett <- function(x)
 	{
 	lm <- lm(x[,i+2] ~ x[,2], data=x)
  	outputmatrix[i+1,1] <- colnames(x[i+2])
- 	outputmatrix[i+1,2] <- bartlett_p <- bartlett.test(x[,i+2] ~ x[,2], data=x)$p.value
+ 	outputmatrix[i+1,2] <- bartlett_p <- stats::bartlett.test(x[,i+2] ~ x[,2], data=x)$p.value
 	}
 	return(outputmatrix)
 }

@@ -18,6 +18,8 @@
 #'
 #' 2) If a breakpoint has been identified using this iterative approach, the p-value
 #' is returned and model plotted; otherwise the function returns no breakpoint.
+#' 
+#' This function is currently only intended for use on continuous outcome data.
 #' @param dosecolumn   Name of dose column of interest in dataframe.
 #' @param targetcolumn  Name of response column of interest in dataframe.
 #' @param data   Input dataframe.
@@ -33,23 +35,23 @@
 segment <- function (dosecolumn="", targetcolumn="", data=NA) {
 
      target<- data[,targetcolumn]
-     fit.lm <- lm(target ~ 1, data=data)
+     fit.lm <- stats::lm(target ~ 1, data=data)
      dose <- data[,dosecolumn]
     
     out <- tryCatch(
-        out <- fit.seg <- segmented(fit.lm, seg.Z = ~ dose, psi = median(dose), control=seg.control(it.max = 100)),
+        out <- fit.seg <- segmented::segmented(fit.lm, seg.Z = ~ dose, psi = stats::median(dose), control=segmented::seg.control(it.max = 100)),
     
         error = function(cond) {
         message("No breakpoint could be estimated from these data within the dose range.")
         return(NA)
         }
     )
-    # if (class(out)=="segmented")
     if ("segmented" %in% class(out))
     {
-    segment.plot (mod = fit.seg, dosecolumn=dosecolumn, targetcolumn=targetcolumn, data=data)
-    segment.print (fit.seg)
-        # return(out)
+    Plot <- get("segment.plot", envir = environment(drsmooth))
+    Plot(mod = fit.seg, dosecolumn=dosecolumn, targetcolumn=targetcolumn, data=data)
+    Print <- get("segment.print", envir = environment(drsmooth))
+    Print(fit.seg)
     }
 }
     

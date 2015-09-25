@@ -1,0 +1,64 @@
+NEWS drsmooth 1.9.0
+
+Version 1.9.0 introduces major additional functionality, 
+changes several functions' parameters, and implements fixes as follows:
+
+***NEW FEATURES***
+
+- Supports data with dichotomous outcome using new 
+required parameter data_type = "continuous" or "dichotomous".  
+Outcome proportion is modeled in dichotomous data.
+Note: depending on data format, new function drsmooth::expand 
+may be required to format summarized dichotomous data 
+before executing drsmooth, see example.
+
+- Adds a Fisher's Exact Test to the available tests 
+from the noel function, for use with dichotomous data.
+
+- Adds an optional output file of predicted values, 
+which may be returned to the user inreal time or written 
+to a .csv file.
+
+- Allows user specification of the basis of the spline 
+dimensions from the default of 4 to 3.
+
+
+***MINOR FUNCTION CHANGES & BUG FIXES***
+
+- Function 'smooth' is changed to 'drsmooth' to avoid 
+conflict with stats::smooth. 'smooth' is deprecated. 
+Please see drsmooth::drsmooth help for details.
+
+- Only the following functions are now exported, 
+to come into closer alignment with package development 
+best practices:  'prelimstats', 'noel', 'segment', 
+'nlbcd', nlaad', 'lbcd', 'expand', 'spline.plot', 'drsmooth'.
+
+- Functions 'noel', 'drsmooth', 'spline.plot',  parameters 
+have changed to include data_type. Please see 
+drsmooth::<function> help for details.
+
+- Functions 'prelimstats', 'lbcd', 'nlaad', 'nlbcd', 
+and 'segment' have not been modified to accommodate 
+dichotmous data.
+
+- STD bias calculation in drsmooth may be turned off, 
+yielding considerable savings in processing time.
+
+- Step intervals used in predicted data is now 
+relative to dose range.
+
+
+***CURRENT ISSUES & FUTURE FUNCTIONALITY (v.2.0.0)***
+
+- 'drsmooth' calculations are based on the response 
+to the lowest dose, even if the dose-response is negative. 
+This is maximally conservative and should be interpreted 
+carefully, as there is no reason to prefer any dose in 
+a non-significant postive (or negative!) initial dose range. 
+A more comprehensive solution, including some 
+parameterization of absolute change in slope, is underway.
+
+- Include relevant preliminary statistics, additional 
+noel tests (e.g. a test for trend in proportions) and 
+cut-off dose functionality for dichtomous data.
